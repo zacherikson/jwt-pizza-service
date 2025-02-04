@@ -42,7 +42,7 @@ test("update user", async () => {
   const updatedUser = {
     id: registerRes.body.user.id,
     email: testUser.email,
-    password: "b",
+    password: "c",
   };
 
   const updateUserRes = await request(app)
