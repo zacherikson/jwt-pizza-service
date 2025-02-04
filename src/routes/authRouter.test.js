@@ -5,6 +5,7 @@ const { Role, DB } = require("../database/database.js");
 const testUser = { name: "pizza diner", email: "reg@test.com", password: "a" };
 let testUserAuthToken;
 let registerRes;
+let loginAdminRes;
 
 beforeAll(async () => {
   const adminUser = await createAdminUser();
@@ -27,7 +28,7 @@ test("login", async () => {
 });
 
 test("logout", async () => {
-  const loginRes = await request(app).put("/api/auth").send(testUser);
+  await request(app).put("/api/auth").send(testUser);
   const logoutRes = await request(app)
     .delete("/api/auth")
     .set("Authorization", `Bearer ${testUserAuthToken}`)

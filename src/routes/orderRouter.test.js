@@ -6,6 +6,7 @@ let admins = [];
 const testUser = { name: "pizza diner", email: "reg@test.com", password: "a" };
 let testUserAuthToken;
 let registerRes;
+let loginAdminRes;
 
 beforeAll(async () => {
   const adminUser = await createAdminUser();

@@ -6,6 +6,7 @@ let admins = [];
 const testUser = { name: "pizza diner", email: "reg@test.com", password: "a" };
 let testUserAuthToken;
 let registerRes;
+let loginAdminRes;
 
 beforeAll(async () => {
   const adminUser = await createAdminUser();
@@ -48,19 +49,71 @@ test("create a franchise", async () => {
   expect(res.body.admins[0].email).toBe(admins[0].email);
 });
 
-// test("delete a franchise", async () => {
-//     const franchiseName = randomName();
-//     const franchise = { name: franchiseName, admins: [admins[0]] };
+test("create a store", async () => {
+  const franchiseName = randomName();
+  const franchise = { name: franchiseName, admins: [admins[0]] };
 
-//     const res = await request(app)
-//       .post("/api/franchise")
-//       .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
-//       .send(franchise);
+  const createRes = await request(app)
+    .post("/api/franchise")
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(franchise);
 
-//     expect(res.status).toBe(200);
-//     expect(res.body.name).toBe(franchiseName);
-//     expect(res.body.admins[0].email).toBe(admins[0].email);
-//   });
+  const storeName = randomName();
+  const store = { name: storeName, franchise: createRes.body.id };
+
+  const res = await request(app)
+    .post(`/api/franchise/${createRes.body.id}/store`)
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(store);
+
+  expect(res.status).toBe(200);
+  expect(res.body.name).toBe(storeName);
+});
+
+test("delete a franchise", async () => {
+  const franchiseName = randomName();
+  const franchise = { name: franchiseName, admins: [admins[0]] };
+
+  const createRes = await request(app)
+    .post("/api/franchise")
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(franchise);
+
+  const res = await request(app)
+    .delete(`/api/franchise/${createRes.body.id}`)
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(franchise);
+
+  expect(res.status).toBe(200);
+  expect(res.body.message).toBe("franchise deleted");
+});
+
+test("delete a store", async () => {
+  const franchiseName = randomName();
+  const franchise = { name: franchiseName, admins: [admins[0]] };
+
+  const createFranchiseRes = await request(app)
+    .post("/api/franchise")
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(franchise);
+
+  const storeName = randomName();
+  const store = { name: storeName, franchise: createFranchiseRes.body.id };
+
+  const createStoreRes = await request(app)
+    .post(`/api/franchise/${createFranchiseRes.body.id}/store`)
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(store);
+
+  const res = await request(app)
+    .delete(
+      `/api/franchise/${createFranchiseRes.body.id}/store/${createStoreRes.body.id}`
+    )
+    .set("Authorization", `Bearer ${loginAdminRes.body.token}`)
+    .send(store);
+
+  expect(res.status).toBe(200);
+});
 
 function expectValidJwt(potentialJwt) {
   expect(potentialJwt).toMatch(
