@@ -35,6 +35,7 @@ class Metrics {
         console.log("Error sending metrics", error);
       }
     }, period);
+    timer.unref();
   }
 
   track() {

@@ -131,6 +131,7 @@ authRouter.put(
       metrics.incrementActiveUsers();
       metrics.incrementSuccessfulAuthAttempts();
     } catch (error) {
+      console.log(error);
       metrics.incrementAuthAttempts();
       metrics.incrementFailedAuthAttempts();
     }
