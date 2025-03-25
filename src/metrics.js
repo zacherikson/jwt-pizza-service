@@ -57,7 +57,7 @@ class Metrics {
     this.failedAuthAttempts += 1;
   }
 
-  setRequestDuration(duration) {
+  requestDuration(duration) {
     this.requestDuration = duration;
   }
 
