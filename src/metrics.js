@@ -88,7 +88,7 @@ class Metrics {
   systemMetrics(buf) {
     buf.addMetric("cpu", this.getCpuUsagePercentage(), "%", "gauge");
     buf.addMetric("memory", this.getMemoryUsagePercentage(), "%", "gauge");
-    buf.addMetric("request_duration", this.request_duration, "1", "sum");
+    buf.addMetric("request_duration", this.request_duration, "ms", "sum");
   }
 
   userMetrics(buf) {
@@ -98,7 +98,7 @@ class Metrics {
   purchaseMetrics(buf) {
     buf.addMetric("pizzas_purchases", this.numMade, "1", "sum");
     buf.addMetric("revenue", this.price, "1", "sum");
-    buf.addMetric("creation_latency", this.creationDuration, "1", "sum");
+    buf.addMetric("creation_latency", this.creationDuration, "ms", "sum");
     buf.addMetric("creation_failures", this.failed, "1", "sum");
   }
 
