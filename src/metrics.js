@@ -69,7 +69,6 @@ class Metrics {
   }
 
   httpMetrics(buf) {
-    console.log(this.requests);
     buf.addMetric(
       "total",
       Object.values(this.requests).reduce((a, b) => a + b, 0),
