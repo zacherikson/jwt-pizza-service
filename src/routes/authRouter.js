@@ -106,7 +106,6 @@ authRouter.post(
     const auth = await setAuth(user);
     metrics.requestDuration(Date.now() - start);
     res.json({ user: user, token: auth });
-    metrics.incrementAuthAttempts();
     if (res.status == 200) {
       metrics.incrementActiveUsers();
       metrics.incrementSuccessfulAuthAttempts();
@@ -127,12 +126,10 @@ authRouter.put(
       const auth = await setAuth(user);
       metrics.requestDuration(Date.now() - start);
       res.json({ user: user, token: auth });
-      metrics.incrementAuthAttempts();
       metrics.incrementActiveUsers();
       metrics.incrementSuccessfulAuthAttempts();
     } catch (error) {
       console.log(error);
-      metrics.incrementAuthAttempts();
       metrics.incrementFailedAuthAttempts();
     }
   })
