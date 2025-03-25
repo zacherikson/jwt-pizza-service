@@ -4,7 +4,7 @@ const os = require("os");
 class Metrics {
   constructor() {
     this.requests = {};
-    this.requestDuration = 0;
+    this.request_duration = 0;
 
     this.activeUsers = 0;
     this.totalAuthAttempts = 0;
@@ -58,7 +58,7 @@ class Metrics {
   }
 
   requestDuration(duration) {
-    this.requestDuration = duration;
+    this.request_duration = duration;
   }
 
   trackPurchase(creationDuration, numMade, price, isSuccess) {
@@ -88,7 +88,7 @@ class Metrics {
   systemMetrics(buf) {
     buf.addMetric("cpu", this.getCpuUsagePercentage(), "%", "gauge");
     buf.addMetric("memory", this.getMemoryUsagePercentage(), "%", "gauge");
-    buf.addMetric("request_duration", this.requestDuration, "ms", "sum");
+    buf.addMetric("request_duration", this.request_duration, "ms", "sum");
   }
 
   userMetrics(buf) {
