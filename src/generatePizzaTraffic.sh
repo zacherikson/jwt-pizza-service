@@ -60,6 +60,17 @@ while true; do
 done &
 pid4=$!
 
+# Simulate a user with a valid email and password every 25 seconds
+while true; do
+  response=$(curl -s -X PUT $host/api/auth -d '{"email":"z@jwt.com", "password":"password"}' -H 'Content-Type: application/json')
+  token=$(echo $response | jq -r '.token')
+  echo "Logging in with valid credentials..."
+  sleep 5
+  curl -s -X DELETE $host/api/auth -H "Authorization: Bearer $token" > /dev/null
+  echo "Logging out diner..."
+done &
+pid5=$!
+
 
 # Wait for the background processes to complete
-wait $pid1 $pid2 $pid3 $pid4
+wait $pid1 $pid2 $pid3 $pid4 $pid5
