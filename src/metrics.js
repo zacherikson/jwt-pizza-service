@@ -223,5 +223,3 @@ module.exports = metrics;
 //     }
 //   ]
 // }
-
-// curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer 1158746:glc_eyJvIjoiMTM3NzExMiIsIm4iOiJzdGFjay0xMjAwOTQ3LWludGVncmF0aW9uLWp3dC1waXp6YS1sb2dzIiwiayI6IlYzOTk0Rk8yTkJwUHVZbTFGMzlaVTN3MSIsIm0iOnsiciI6InByb2QtdXMtd2VzdC0wIn19" -d '{"streams": [{"stream": {"Language": "Curl", "source": "Shell"},"values": [["'"$(($(date +%s)*1000000000))"'", "This is my log line"]]}]}' https://logs-prod-021.grafana.net/loki/api/v1/push
