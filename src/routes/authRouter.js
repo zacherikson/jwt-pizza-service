@@ -4,6 +4,8 @@ const config = require("../config.js");
 const { asyncHandler } = require("../endpointHelper.js");
 const { DB, Role } = require("../database/database.js");
 const metrics = require("../metrics.js");
+const Logger = require("pizza-logger");
+const logger = new Logger(config);
 
 const authRouter = express.Router();
 
@@ -72,6 +74,7 @@ async function setAuthUser(req, res, next) {
           !!req.user.roles.find((r) => r.role === role);
       }
     } catch {
+      logger.unhandledErrorLogger("token is invalid");
       req.user = null;
     }
   }
@@ -111,6 +114,7 @@ authRouter.post(
       metrics.incrementSuccessfulAuthAttempts();
     } else {
       metrics.incrementFailedAuthAttempts();
+      logger.unhandledErrorLogger("unable to register");
     }
   })
 );
@@ -129,8 +133,8 @@ authRouter.put(
       metrics.incrementActiveUsers();
       metrics.incrementSuccessfulAuthAttempts();
     } catch (error) {
-      console.log(error);
       metrics.incrementFailedAuthAttempts();
+      logger.unhandledErrorLogger(error);
     }
   })
 );

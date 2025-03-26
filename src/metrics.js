@@ -202,3 +202,26 @@ const metrics = new Metrics();
 metrics.sendMetricsPeriodically(1000);
 
 module.exports = metrics;
+
+// {
+//   "streams": [  # streams are used to organize and label queryable data
+//     {
+//       "stream": { # A stream is a sequence of log entries with shared characteristics or metadata
+//         "Language": "NodeJS", # First Log Label
+//         "source": "Code" # Second Log Label
+//       },
+//       "values": [ # values present your actual log information
+//         [
+//           "(Math.floor(Date.now() / 1000) * 1000000000).toString()", # timestamp (in nanoseconds)
+//           "This is my log line" # your log itself (string)
+//         ],
+//         [
+//           "(Math.floor(Date.now() / 1000) * 1000000000).toString()", # timestamp (in nanoseconds)
+//           "This is another log line" # Second log line (string)
+//         ],
+//       ]
+//     }
+//   ]
+// }
+
+// curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer 1158746:glc_eyJvIjoiMTM3NzExMiIsIm4iOiJzdGFjay0xMjAwOTQ3LWludGVncmF0aW9uLWp3dC1waXp6YS1sb2dzIiwiayI6IlYzOTk0Rk8yTkJwUHVZbTFGMzlaVTN3MSIsIm0iOnsiciI6InByb2QtdXMtd2VzdC0wIn19" -d '{"streams": [{"stream": {"Language": "Curl", "source": "Shell"},"values": [["'"$(($(date +%s)*1000000000))"'", "This is my log line"]]}]}' https://logs-prod-021.grafana.net/loki/api/v1/push
