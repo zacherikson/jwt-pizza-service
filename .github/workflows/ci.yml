@@ -100,6 +100,10 @@ jobs:
           name: package
           path: dist/
 
+      - name: Annotate deployment in Grafana
+        run: |
+          curl -s -X POST https://eriksonz.grafana.net/api/annotations -H "Authorization: Bearer ${{ secrets.GRAFANA_ACCESS_TOKEN }}" -H "Content-Type:application/json" -d '{"dashboardUID":"fefymuvizjfggb", "panelId":1, "tags":["backend","production"], "text":"Version '"$version"' deployed" }'
+
   deploy:
     runs-on: ubuntu-latest
     permissions:
