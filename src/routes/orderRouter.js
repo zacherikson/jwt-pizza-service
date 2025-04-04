@@ -9,6 +9,27 @@ const Logger = require("pizza-logger");
 const orderRouter = express.Router();
 const logger = new Logger(config);
 
+let enableChaos = false;
+orderRouter.put(
+  "/chaos/:state",
+  authRouter.authenticateToken,
+  asyncHandler(async (req, res) => {
+    if (req.user.isRole(Role.Admin)) {
+      enableChaos = req.params.state === "true";
+    }
+    res.json({ chaos: enableChaos });
+  })
+);
+
+orderRouter.post("/", (req, res, next) => {
+  if (enableChaos && Math.random() < 0.5) {
+    metrics.doChaos(1);
+    throw new StatusCodeError("Chaos monkey", 500);
+  }
+  metrics.doChaos(0);
+  next();
+});
+
 orderRouter.endpoints = [
   {
     method: "GET",
@@ -117,7 +138,6 @@ orderRouter.get(
   })
 );
 
-// createOrder
 orderRouter.post(
   "/",
   authRouter.authenticateToken,
@@ -156,27 +176,5 @@ orderRouter.post(
     }
   })
 );
-
-let enableChaos = false;
-orderRouter.put(
-  "/chaos/:state",
-  authRouter.authenticateToken,
-  asyncHandler(async (req, res) => {
-    if (req.user.isRole(Role.Admin)) {
-      enableChaos = req.params.state === "true";
-    }
-    res.json({ chaos: enableChaos });
-  })
-);
-
-orderRouter.post("/", (req, res, next) => {
-  if (enableChaos && Math.random() < 0.5) {
-    metrics.doChaos(1);
-    throw new StatusCodeError("Chaos monkey", 500);
-  } else {
-    metrics.doChaos(0);
-  }
-  next();
-});
 
 module.exports = orderRouter;
