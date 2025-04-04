@@ -11,7 +11,7 @@ host=$1
 # Function to cleanly exit
 cleanup() {
   echo "Terminating background processes..."
-  kill $pid1 $pid2 $pid3 $pid4 $pid5 $pid6
+  kill $pid1 $pid2 $pid3 $pid4 $pid5
   exit 0
 }
 
@@ -71,25 +71,25 @@ while true; do
 done &
 pid5=$!
 
-# Chaos testing every 15 seconds
-while true; do
-  response=$(curl -s -X PUT $host/api/auth -d '{"email":"a@jwt.com", "password":"admin"}' -H 'Content-Type: application/json')
-  token=$(echo $response | jq -r '.token')
+# # Chaos testing every 15 seconds
+# while true; do
+#   response=$(curl -s -X PUT $host/api/auth -d '{"email":"a@jwt.com", "password":"admin"}' -H 'Content-Type: application/json')
+#   token=$(echo $response | jq -r '.token')
   
-  echo "Enabling chaos..."
-  curl -X PUT "$host/api/order/chaos/true" -H "Authorization: Bearer $token"
+#   echo "Enabling chaos..."
+#   curl -X PUT "$host/api/order/chaos/true" -H "Authorization: Bearer $token"
   
-  echo "Testing order during chaos..."
-  curl -s -X POST "$host/api/order" \
-    -H 'Content-Type: application/json' \
-    -d '{"franchiseId": 1, "storeId":1, "items":[{ "menuId": 1, "description": "Veggie", "price": 0.05 }]}' \
-    -H "Authorization: Bearer $token"
+#   echo "Testing order during chaos..."
+#   curl -s -X POST "$host/api/order" \
+#     -H 'Content-Type: application/json' \
+#     -d '{"franchiseId": 1, "storeId":1, "items":[{ "menuId": 1, "description": "Veggie", "price": 0.05 }]}' \
+#     -H "Authorization: Bearer $token"
     
-  sleep 15
+#   sleep 15
   
-  curl -s -X DELETE $host/api/auth -H "Authorization: Bearer $token" > /dev/null
-done &
-pid6=$!
+#   curl -s -X DELETE $host/api/auth -H "Authorization: Bearer $token" > /dev/null
+# done &
+# pid6=$!
 
 # Wait for the background processes to complete
 wait $pid1 $pid2 $pid3 $pid4 $pid5 $pid6
