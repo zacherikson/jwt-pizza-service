@@ -5,6 +5,7 @@ const { authRouter } = require("./authRouter.js");
 const { asyncHandler, StatusCodeError } = require("../endpointHelper.js");
 const metrics = require("../metrics.js");
 const Logger = require("pizza-logger");
+const { enable } = require("../service.js");
 
 const orderRouter = express.Router();
 const logger = new Logger(config);
@@ -165,14 +166,16 @@ orderRouter.put(
     if (req.user.isRole(Role.Admin)) {
       enableChaos = req.params.state === "true";
     }
-
     res.json({ chaos: enableChaos });
   })
 );
 
 orderRouter.post("/", (req, res, next) => {
   if (enableChaos && Math.random() < 0.5) {
+    metrics.doChaos(1);
     throw new StatusCodeError("Chaos monkey", 500);
+  } else {
+    metrics.doChaos(0);
   }
   next();
 });

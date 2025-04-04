@@ -15,6 +15,8 @@ class Metrics {
     this.price = 0;
     this.creationDuration = 0;
     this.failed = 0;
+
+    this.chaos = 0;
   }
 
   requestTracker() {
@@ -66,6 +68,14 @@ class Metrics {
     this.numMade += numMade;
     this.price += price;
     if (!isSuccess) this.failed += 1;
+  }
+
+  doChaos(value) {
+    this.chaos = value;
+  }
+
+  chaosMetric(buf) {
+    buf.addMetric("chaos", this.chaos, "1", "sum");
   }
 
   httpMetrics(buf) {
@@ -140,6 +150,7 @@ class Metrics {
         this.userMetrics(buf);
         this.purchaseMetrics(buf);
         this.authMetrics(buf);
+        this.chaosMetric(buf);
 
         this.sendMetricToGrafana(buf.metrics);
       } catch (error) {
