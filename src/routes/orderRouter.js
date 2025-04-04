@@ -5,7 +5,6 @@ const { authRouter } = require("./authRouter.js");
 const { asyncHandler, StatusCodeError } = require("../endpointHelper.js");
 const metrics = require("../metrics.js");
 const Logger = require("pizza-logger");
-const { enable } = require("../service.js");
 
 const orderRouter = express.Router();
 const logger = new Logger(config);
