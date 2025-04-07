@@ -11,7 +11,7 @@ host=$1
 # Function to cleanly exit
 cleanup() {
   echo "Terminating background processes..."
-  kill $pid1 $pid2 $pid3 $pid4 $pid5
+  kill $pid1 $pid2 $pid3 $pid4 $pid5 #$pid6
   exit 0
 }
 
@@ -71,7 +71,7 @@ while true; do
 done &
 pid5=$!
 
-# # Chaos testing every 15 seconds
+# Chaos testing every 15 seconds
 # while true; do
 #   response=$(curl -s -X PUT $host/api/auth -d '{"email":"a@jwt.com", "password":"admin"}' -H 'Content-Type: application/json')
 #   token=$(echo $response | jq -r '.token')
