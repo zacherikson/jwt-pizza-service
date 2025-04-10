@@ -146,8 +146,3 @@ jobs:
       - name: Deploy new container
         run: |
           aws ecs update-service --cluster jwt-pizza-service --service jwt-pizza-service --force-new-deployment
-
-      - name: Run Dastardly Action Step
-        uses: PortSwigger/dastardly-github-action@main
-        with:
-          target-url: "https://pizza.zacherikson329.click"
