@@ -17,7 +17,7 @@
 | Classification | Injection                                                                                                                               |
 | Severity       | 1                                                                                                                                       |
 | Description    | SQL injection. Rewrote all user data to be email=hacker@jwt.com and password=p. Now hacker@jwt.com is admin and no one else has access. |
-| Images         | ![self attack](penetrationTests/erikson_self_attack.png)                                                                                |
+| Images         | ![self attack](erikson_self_attack.png)                                                                                                 |
 | Corrections    | Sanitize user inputs in updateUser function                                                                                             |
 
 ## Peer Attack
@@ -32,7 +32,7 @@
 | Classification | Injection                                                                                                                               |
 | Severity       | 1                                                                                                                                       |
 | Description    | SQL injection. Rewrote all user data to be email=hacker@jwt.com and password=p. Now hacker@jwt.com is admin and no one else has access. |
-| Images         | ![attack on ethan](penetrationTests/erikson_attack_on_ethan.png)                                                                        |
+| Images         | ![attack on ethan](erikson_attack_on_ethan.png)                                                                                         |
 | Corecctions    | Sanitize user inputs in updateUser function                                                                                             |
 
 ## Learnings
