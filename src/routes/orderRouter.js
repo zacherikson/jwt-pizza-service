@@ -144,6 +144,12 @@ orderRouter.post(
   asyncHandler(async (req, res) => {
     const start = Date.now();
     const orderReq = req.body;
+    if (orderReq.items.length > 15) {
+      throw new StatusCodeError(
+        "Cannot order more than 15 pizzas at once",
+        400
+      );
+    }
     const order = await DB.addDinerOrder(req.user, orderReq);
     const r = await fetch(`${config.factory.url}/api/order`, {
       method: "POST",

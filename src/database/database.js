@@ -202,6 +202,13 @@ class DB {
   async addDinerOrder(user, order) {
     const connection = await this.getConnection();
     try {
+      if (order.items.length > 15) {
+        throw new StatusCodeError(
+          "Cannot order more than 15 pizzas at once",
+          400
+        );
+      }
+
       const orderResult = await this.query(
         connection,
         `INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())`,
